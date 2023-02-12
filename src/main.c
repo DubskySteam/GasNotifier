@@ -15,14 +15,22 @@ void app_main() {
 
     ESP_ERROR_CHECK(esp_netif_init());
 
+    while(1)
+    {
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        ESP_LOGI("main", "Hello world!");
+    }
+}
+
+void initAP() {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
     wifi_config_t wifi_config = {
         .ap = {
-            .ssid = "MAAS-ESP32",
-            .ssid_len = strlen("MAAS-ESP32"),
-            .password = "1234567890",
+            .ssid = "GasNotifier",
+            .ssid_len = strlen("GasNotifier"),
+            .password = "gasnotifier",
             .max_connection = 10,
             .authmode = WIFI_AUTH_OPEN,
         },
@@ -31,10 +39,4 @@ void app_main() {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
-
-    while(1)
-    {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        ESP_LOGI("main", "Hello world!");
-    }
 }
