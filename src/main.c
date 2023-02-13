@@ -13,6 +13,8 @@
 #define AO 35
 #define D0 26
 
+static esp_adc_cal_characteristics_t adc1_chars;
+
 void app_main() {
     
     esp_err_t ret = nvs_flash_init();
@@ -23,18 +25,21 @@ void app_main() {
     ESP_ERROR_CHECK(ret);
 
     ESP_ERROR_CHECK(esp_netif_init());
-   
-    gpio_pad_select_gpio(AO);
-    gpio_set_direction(AO, GPIO_MODE_INPUT);
 
-    gpio_pad_select_gpio(D0);
-    gpio_set_direction(D0, GPIO_MODE_INPUT);
+    initAP();
+    initGPIO();
 
-    while(1)
+    while (1) 
     {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        readGas();
+        vTaskDelay(pdMS_TO_TICKS(100));
+        uint32_t voltage = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_7), &adc1_chars);
+        ESP_LOGI("SENSOR", "DIGITAL: %d   ANALOG: %ld mV", gpio_get_level(D0) , voltage);
     }
+}
+
+void initMQ7() {
+    adc1_config_width(ADC_WIDTH_BIT_12);
+    adc1_config_channel_atten(ADC1_CHANNEL_7, ADC_ATTEN_DB_11);
 }
 
 void readGas() {
@@ -45,7 +50,11 @@ void readGas() {
 }
 
 void initGPIO() {
-    
+    gpio_pad_select_gpio(AO);
+    gpio_set_direction(AO, GPIO_MODE_INPUT);
+
+    gpio_pad_select_gpio(D0);
+    gpio_set_direction(D0, GPIO_MODE_INPUT);
 }
 
 void initAP() {

@@ -3,6 +3,7 @@
 
 void initAP();
 void initGPIO();
+void initMQ7();
 void readGas();
 
 #endif

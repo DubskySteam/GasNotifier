@@ -2,6 +2,7 @@
     "files.associations": {
         "nvs_flash.h": "c",
         "inits.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "esp_adc_cal.h": "c"
     }
 }
