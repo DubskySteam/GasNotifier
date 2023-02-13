@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "nvs_flash.h": "c"
+        "nvs_flash.h": "c",
+        "inits.h": "c",
+        "gpio.h": "c"
     }
 }
