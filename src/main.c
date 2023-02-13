@@ -28,12 +28,12 @@ void app_main() {
 
     initAP();
     initGPIO();
+    initMQ7();
 
     while (1) 
     {
         vTaskDelay(pdMS_TO_TICKS(100));
-        uint32_t voltage = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_7), &adc1_chars);
-        ESP_LOGI("SENSOR", "DIGITAL: %d   ANALOG: %ld mV", gpio_get_level(D0) , voltage);
+        ESP_LOGI("SENSOR", "DIGITAL: %d   ANALOG: %ld mV", gpio_get_level(D0) , esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_7), &adc1_chars));
     }
 }
 
